@@ -1,0 +1,75 @@
+# Define a function for Vigenère Cipher that takes text, key, and mode as parameters
+def vigenere_cipher(text, key, mode):
+    # Initialize an empty string to store the result
+    result = ""
+    # Calculate the length of the key
+    key_length = len(key)
+    
+    # Iterate through each character in the input text
+    for i in range(len(text)):
+        # Get the i-th character from the input text
+        char = text[i]
+        
+        # Check if the character is an alphabet letter
+        if char.isalpha():
+            # Get the i-th character from the key, considering its length
+            key_char = key[i % key_length]
+            
+            # Calculate the shift value based on the key character
+            shift = ord(key_char.upper()) - ord('A')
+            
+            # Check if the character is uppercase
+            if char.isupper():
+                # Perform encryption or decryption based on the mode
+                result += chr((ord(char) - ord('A') + shift) % 26 + ord('A')) if mode == 'encode' else chr((ord(char) - ord('A') - shift) % 26 + ord('A'))
+            else:
+                # Perform encryption or decryption for lowercase characters
+                result += chr((ord(char) - ord('a') + shift) % 26 + ord('a')) if mode == 'encode' else chr((ord(char) - ord('a') - shift) % 26 + ord('a'))
+        else:
+            # If the character is not an alphabet letter, append it as it is
+            result += char
+    
+    # Return the final result
+    return result
+
+# Define the main function to interact with the user
+def main():
+    # Start an infinite loop for the user interface
+    while True:
+        # Display a welcome message and menu options
+        print("\nWelcome to your personal Vigenère Cipher encoder/decoder!")
+        print("Select from the menu below what you would like to do...")
+        print("1. Encode")
+        print("2. Decode")
+        print("3. Exit")
+        
+        # Take user input for menu choice
+        choice = input("Enter your choice (1, 2, or 3): ")
+        
+        # Check if the user wants to exit the program
+        if choice == '3':
+            print("Exiting the program. Goodbye!")
+            break
+        # Check if the user entered an invalid choice
+        elif choice not in ['1', '2']:
+            print("Invalid choice. Please enter 1, 2, or 3.")
+            continue
+
+        # Determine the operation based on the user's choice
+        operation = 'encode' if choice == '1' else 'decode'
+
+        # Take user input for the text and key
+        text = input("Enter a string: ")
+        key = input("Enter the key: ")
+
+        # Call the vigenere_cipher function to perform the chosen operation
+        encoded_decoded_text = vigenere_cipher(text, key, operation)
+
+        # Display the original and encoded/decoded text
+        print(f"\nOriginal text: {text}")
+        print(f"{operation.capitalize()}d text: {encoded_decoded_text}")
+
+# Check if the script is being run as the main program
+if __name__ == "__main__":
+    # Call the main function to start the program
+    main()
